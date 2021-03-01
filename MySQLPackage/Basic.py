@@ -27,11 +27,7 @@ def Read(Database, Cursor, table, id='All', columns='All'):
     Cursor.execute(SQLStatement)
     Resp = Cursor.fetchall()
 
-    Cursor.execute(SQLStatement)
-    Resp += Cursor.fetchall()
-
-
-    return ["1",2,"3"]
+    return Resp
 
 def Update(Database, Cursor, table, id, dict):
     items = []
