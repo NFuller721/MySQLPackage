@@ -7,6 +7,7 @@ def Create(Database, Cursor, table, dict):
 
     SQLStatement = f"INSERT INTO {table} ({','.join(columns)}) VALUES ({','.join(values)})"
     Cursor.execute(SQLStatement)
+    Database.commit()
 
 def Read(Database, Cursor, table, id='All', columns='All'):
     if columns == 'All':
@@ -39,11 +40,30 @@ def Update(Database, Cursor, table, id, dict):
         raise ValueError()
 
     Cursor.execute(SQLStatement)
+    Database.commit()
 
-def Delete(Database, Cursor, table, id):
-    if type(id) == int:
+def Delete(Database, Cursor, table, id=''):
+    ResetIdQuery = [
+        "set @autoid :=0",
+        f"update {table} set id = @autoid := (@autoid+1)",
+        f"alter table {table} Auto_Increment = 1"
+    ]
+
+    if id == '':
+        SQLStatement = f"DELETE FROM {table}"
+    elif type(id) == list:
+        ids = []
+        for i in id:
+            ids += [i]
+        SQLStatement = f"DELETE FROM {table} WHERE id IN ({', '.join([str(i) for i in id])})"
+    elif type(id) == int:
         SQLStatement = f"DELETE FROM {table} WHERE id={id}"
     else:
         raise ValueError()
 
     Cursor.execute(SQLStatement)
+
+    for ResetLine in ResetIdQuery:
+        Cursor.execute(ResetLine)
+
+    Database.commit()
