@@ -33,12 +33,11 @@ def Read(Database, Cursor, table, id='All', columns='All'):
 def Update(Database, Cursor, table, id, dict):
     items = []
     for column, value in dict.items():
-        items += [f"{column} = '{value}',"]
+        items += [f"{column} = '{value}'"]
     if type(id) == int:
-        SQLStatement = f"UPDATE {table} {','.join(items)} WHERE id={id}"
+        SQLStatement = f"UPDATE {table} SET {', '.join(items)} WHERE id={id}"
     else:
         raise ValueError()
-
     Cursor.execute(SQLStatement)
     Database.commit()
 
