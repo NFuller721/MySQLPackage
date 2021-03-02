@@ -19,9 +19,9 @@ def Read(Database, Cursor, table, id='All', columns='All'):
             raise ValueError()
     else:
         if id == 'All':
-            SQLStatement = f"SELECT ({','.join(columns)}) FROM {table}"
+            SQLStatement = f"SELECT {','.join(columns)} FROM {table}"
         elif type(id) == int:
-            SQLStatement = f"SELECT ({','.join(columns)}) FROM {table} WHERE id={id}"
+            SQLStatement = f"SELECT {','.join(columns)} FROM {table} WHERE id={id}"
         else:
             raise ValueError()
 
