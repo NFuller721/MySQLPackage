@@ -44,7 +44,7 @@ def Update(Database, Cursor, table, id, dict):
     Cursor.execute(SQLStatement)
     Database.commit()
 
-def Delete(Database, Cursor, table, id=''):
+def Delete(Database, Cursor, table, id='All'):
     SQLStatement = ""
     ResetIdQuery = [
         "set @autoid :=0",
@@ -52,7 +52,7 @@ def Delete(Database, Cursor, table, id=''):
         f"alter table {table} Auto_Increment = 1"
     ]
 
-    if id == '':
+    if id == 'All':
         SQLStatement = f"DELETE FROM {table}"
     elif type(id) == list:
         ids = []
