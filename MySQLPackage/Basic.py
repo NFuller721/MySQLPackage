@@ -1,4 +1,5 @@
 def Create(Database, Cursor, table, dict):
+    SQLStatement = ""
     columns = []
     values = []
     for column, value in dict.items():
@@ -10,6 +11,7 @@ def Create(Database, Cursor, table, dict):
     Database.commit()
 
 def Read(Database, Cursor, table, id='All', columns='All'):
+    SQLStatement = ""
     if columns == 'All':
         if id == 'All':
             SQLStatement = f"SELECT * FROM {table}"
@@ -31,6 +33,7 @@ def Read(Database, Cursor, table, id='All', columns='All'):
     return Resp
 
 def Update(Database, Cursor, table, id, dict):
+    SQLStatement = ""
     items = []
     for column, value in dict.items():
         items += [f"{column} = '{value}'"]
@@ -42,6 +45,7 @@ def Update(Database, Cursor, table, id, dict):
     Database.commit()
 
 def Delete(Database, Cursor, table, id=''):
+    SQLStatement = ""
     ResetIdQuery = [
         "set @autoid :=0",
         f"update {table} set id = @autoid := (@autoid+1)",
