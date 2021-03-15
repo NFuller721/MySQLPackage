@@ -65,8 +65,8 @@ def Delete(Database, Cursor, table, id='All'):
         raise ValueError()
 
     Cursor.execute(SQLStatement)
+    Database.commit()
 
     for ResetLine in ResetIdQuery:
         Cursor.execute(ResetLine)
-
     Database.commit()

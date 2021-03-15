@@ -50,3 +50,6 @@ class Connection:
         )
         self.database = Database
         self.cursor = Database.cursor()
+
+    def __del__():
+        self.database.close()
