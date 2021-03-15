@@ -46,11 +46,6 @@ def Update(Database, Cursor, table, id, dict):
 
 def Delete(Database, Cursor, table, id='All'):
     SQLStatement = ""
-    ResetIdQuery = [
-        "set @autoid :=0",
-        f"update {table} set id = @autoid := (@autoid+1)",
-        f"alter table {table} Auto_Increment = 1"
-    ]
 
     if id == 'All':
         SQLStatement = f"DELETE FROM {table}"
@@ -66,6 +61,15 @@ def Delete(Database, Cursor, table, id='All'):
 
     Cursor.execute(SQLStatement)
     Database.commit()
+
+    ResetId(Database=Database, Cursor=Cursor, table=table)
+
+def ResetId(Database, Cursor, table):
+    ResetIdQuery = [
+        "set @autoid :=0",
+        f"update {table} set id = @autoid := (@autoid+1)",
+        f"alter table {table} Auto_Increment = 1"
+    ]
 
     for ResetLine in ResetIdQuery:
         Cursor.execute(ResetLine)
