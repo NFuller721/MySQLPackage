@@ -51,5 +51,12 @@ class Connection:
         self.database = Database
         self.cursor = Database.cursor()
 
+    def start(self):
+        self.run()
+        Database = self.getDatabase()
+        Cursor = self.getCursor()
+
+        return Database, Cursor
+
     def __del__():
         self.database.close()
