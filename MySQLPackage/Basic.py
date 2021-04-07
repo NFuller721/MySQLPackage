@@ -41,6 +41,9 @@ def Update(Database, Cursor, table, id, dict):
         SQLStatement = f"UPDATE {table} SET {', '.join(items)} WHERE id={id}"
     else:
         raise ValueError()
+
+    print(SQLStatement)
+
     Cursor.execute(SQLStatement)
     Database.commit()
 
