@@ -1,4 +1,4 @@
-def Create(Database, Cursor, table, dict):
+def Create(Database, Cursor, table, dict, log=False):
     SQLStatement = ""
     columns = []
     values = []
@@ -7,10 +7,12 @@ def Create(Database, Cursor, table, dict):
         values += [f"'{value}'"]
 
     SQLStatement = f"INSERT INTO {table} ({','.join(columns)}) VALUES ({','.join(values)})"
+    if log:
+        print(SQLStatement)
     Cursor.execute(SQLStatement)
     Database.commit()
 
-def Read(Database, Cursor, table, id='All', columns='All'):
+def Read(Database, Cursor, table, id='All', columns='All', log=False):
     SQLStatement = ""
     if columns == 'All':
         if id == 'All':
@@ -26,13 +28,14 @@ def Read(Database, Cursor, table, id='All', columns='All'):
             SQLStatement = f"SELECT {','.join(columns)} FROM {table} WHERE id={id}"
         else:
             raise ValueError()
-
+    if log:
+        print(SQLStatement)
     Cursor.execute(SQLStatement)
     Resp = Cursor.fetchall()
 
     return Resp
 
-def Update(Database, Cursor, table, id, dict):
+def Update(Database, Cursor, table, id, dict, log=False):
     SQLStatement = ""
     items = []
     for column, value in dict.items():
@@ -42,12 +45,13 @@ def Update(Database, Cursor, table, id, dict):
     else:
         raise ValueError()
 
-    print(SQLStatement)
+    if log:
+        print(SQLStatement)
 
     Cursor.execute(SQLStatement)
     Database.commit()
 
-def Delete(Database, Cursor, table, id='All'):
+def Delete(Database, Cursor, table, id='All', log=False):
     SQLStatement = ""
 
     if id == 'All':
@@ -61,6 +65,9 @@ def Delete(Database, Cursor, table, id='All'):
         SQLStatement = f"DELETE FROM {table} WHERE id={id}"
     else:
         raise ValueError()
+
+    if log:
+        print(SQLStatement)
 
     Cursor.execute(SQLStatement)
     Database.commit()
